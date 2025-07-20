@@ -19,7 +19,7 @@ A modern Twitter clone application built with React and Firebase.
 - Real-time data updates (Firestore)  
 - Profile page  
 - Notification system  
-- Responsive design  
+- Responsive design
 
 ## gif
 

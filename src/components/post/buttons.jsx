@@ -15,7 +15,7 @@ const Buttons = ({tweet}) => {
 
         // like lamadıysam kullanıcı id sini likes dizisinden kaldır
         await updateDoc (docRef, {
-             likes: isLiked ? arrayRemove(tweet.user.id) : arrayUnion(tweet.user.id),
+             likes: isLiked ? arrayRemove(auth.currentUser.uid) : arrayUnion(auth.currentUser.uid),
         });
     };
 

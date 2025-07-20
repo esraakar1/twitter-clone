@@ -9,7 +9,7 @@ const Nav = ({user}) => {
   return (
     <nav className='flex flex-col justify-between items-end px-2 py-4'>
         <div>
-            <img src="./logo.webp" alt="x" className='w-14 mb-4' />
+            <img src="./logo.webp" alt="x" className='w-20 mb-4' />
 
             {navSections.map((item,key) => (
               <div className='flex items-center text-2xl cursor-pointer transition max-md:justify-center gap-3 rounded-lg md:text-xl p-3 hover:bg-tw-gray ' key={key}>

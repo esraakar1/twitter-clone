@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc } from 'firebase/firestore';
@@ -8,6 +8,7 @@ import EditModal from '../modal/edit-modal';
 const DropDown = ({tweet}) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const checkboxRef = useRef();
 
     // TWEET i gönderen kişinin id si ve oturumu açık olan kişinin id si aynı mı?
     const isOwn = tweet.user.id === auth.currentUser.uid;
@@ -29,7 +30,7 @@ const DropDown = ({tweet}) => {
     isOwn && (
       <>
         <label class="popup">
-          <input type="checkbox"/>
+          <input type="checkbox"ref={checkboxRef} />
           <div class="burger" tabindex="0">
             <span></span>
             <span></span>

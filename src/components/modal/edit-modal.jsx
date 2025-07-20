@@ -3,18 +3,32 @@ import Modal from '.';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import uploadToStorage from '../../firebase/uploadToStorage';
+import { toast } from 'react-toastify';
+import Loader from '../loader';
 
 
 // HOC
 const EditModal = ({isOpen, close, tweet}) => {
     // resim kaldırılacak mı 
-    const [isPicDeleting, setIsPicDeleting] = useState(false)
+    const [isPicDeleting, setIsPicDeleting] = useState(false);
+
+    // güncelleme yükleniyor mu?
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const text = e.target[0].value;
-        const file = e.target[1].files[0];
+        const text = e.target[0].value.trim();
+        const file = e.target[1].files && e.target[1].files[0];
+
+        // verileri kontrol et
+        if(!text && !file && !tweet.content.image) {
+           return toast.info("Lütfen İçeriği Belirleyin!");
+        }
+
+        try {
+
+        setIsLoading(true)
 
         const docRef = doc(db, "tweets", tweet.id);
 
@@ -36,8 +50,17 @@ const EditModal = ({isOpen, close, tweet}) => {
 
         await updateDoc(docRef, updatedData);
 
-        close();
+        // modal ı kapat
+        close();  
+
+         } catch (error) {
+            console.log(error);
+        }
+
+       
         setIsPicDeleting(false);
+        setIsLoading(false);
+        
     };
     
 
@@ -59,8 +82,12 @@ const EditModal = ({isOpen, close, tweet}) => {
                 <input type='file' className='button'/>)}
             
             <div className='flex justify-end gap-5 mt-10'>
-                <button className='cursor-pointer'>Vazgeç</button>
-                <button className='bg-secondary text-black px-3 py-1 rounded-md cursor-pointer hover:bg-secondary/70 transition'>Kaydet</button>
+                <button onClick={close} type='button' className='cursor-pointer'>Vazgeç
+               </button>
+
+                <button disabled={isLoading} type='submit' className='bg-secondary text-black px-3 py-1 rounded-md cursor-pointer hover:bg-secondary/70 transition min-w-[80px]'>
+                {isLoading ? <Loader /> : "Kaydet"}
+                </button>
             </div>
         </form>
     </Modal>
